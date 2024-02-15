@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class StandAPIImpl implements StandAPI {
+public class StandApiImpl implements StandAPI {
 
     @Autowired
     private VehicleBrandsRepository vehicleBrandRepository;
