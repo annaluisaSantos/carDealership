@@ -3,15 +3,10 @@ package com.cardealership.domain;
 import com.cardealership.enums.FuelType;
 import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Vehicle {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String licencePlate;
@@ -58,10 +53,12 @@ public class Vehicle {
         return licencePlate;
     }
 
+    @OneToMany
     public VehicleBrand getBrand() {
         return brand;
     }
 
+    @OneToMany
     public VehicleModel getModel() {
         return model;
     }
