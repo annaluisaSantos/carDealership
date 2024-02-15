@@ -10,25 +10,18 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface standAPI {
-    //Metodos aka buyVehicles, createvehicle...
 
-    ResponseEntity<VehicleBrandDTO> createBrand(VehicleBrandDTO brand);
-    ResponseEntity<VehicleModelDTO> createModel(VehicleModelDTO model);
-
-
-    //Sellers
-    ResponseEntity<List<SellerDTO>> listSellers();
-    ResponseEntity<SellerDTO> addSeller(SellerDTO sellerDTO);
-    ResponseEntity<SellerDTO> updateSeller(SellerDTO sellerDTO, Long sellerId);
-    ResponseEntity<SellerDTO> deleteSeller(Long sellerId);
-
-
-    //Vehicles
-    ResponseEntity<List<VehicleDTO>> getAllVehicles();
-    ResponseEntity<VehicleDTO> getVehicleById(Long id);
-    ResponseEntity<>
-
-
+    public VehicleBrandDTO addBrand(VehicleBrandDTO brand);
+    public VehicleModelDTO addModel(VehicleModelDTO model);
+    public List<SellerDTO> listSellers();
+    SellerDTO createSeller(SellerDTO seller);
+    SellerDTO updateSeller(long sellerId, SellerDTO seller);
+    SellerDTO deleteSeller(long sellerId);
+    List<VehicleDTO> listVehicles();
+    VehicleDTO addVehicle(VehicleDTO vehicle);
+    VehicleDTO updateVehicle(long vehicleId, VehicleDTO vehicle);
+    VehicleDTO deleteVehicle(long vehicleId);
+    VehicleDTO changeVehicleStatus(long vehicleId, VehicleDTO vehicle);
 
 
 }
