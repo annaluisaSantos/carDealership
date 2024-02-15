@@ -22,6 +22,8 @@ public class Seller {
         this.taxNumber = taxNumber;
     }
 
+    public Seller() { }
+
     public Long getStandId() {
         return StandId;
     }

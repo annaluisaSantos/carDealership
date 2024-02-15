@@ -20,6 +20,8 @@ public class VehicleModel {
         this.vehicleBrand = vehicleBrand;
     }
 
+    public VehicleModel() {}
+
     public Long getModelId() {
         return modelId;
     }

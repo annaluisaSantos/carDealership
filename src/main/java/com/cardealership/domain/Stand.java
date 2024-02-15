@@ -21,6 +21,8 @@ public class Stand {
         this.email = email;
     }
 
+    public Stand() {}
+
     public Long getStandId() {
         return StandId;
     }

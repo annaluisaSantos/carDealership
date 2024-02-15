@@ -18,6 +18,8 @@ public class VehicleBrand {
         this.name = name;
     }
 
+    public VehicleBrand() {}
+
     public Long getId() {
         return brandId;
     }
