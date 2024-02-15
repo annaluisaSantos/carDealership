@@ -12,15 +12,17 @@ public class SellerDTO {
     private String nameDTO;
     private String emailDTO;
     private int phoneNumberDTO;
+    private int taxNumberDTO;
 
-    public SellerDTO(Long sellerIdDTO, String nameDTO, String emailDTO, int phoneNumberDTO) {
+    public SellerDTO(Long sellerIdDTO, String nameDTO, String emailDTO, int phoneNumberDTO, int taxNumberDTO) {
         this.sellerIdDTO = sellerIdDTO;
         this.nameDTO = nameDTO;
         this.emailDTO = emailDTO;
         this.phoneNumberDTO = phoneNumberDTO;
+        this.taxNumberDTO = taxNumberDTO;
     }
 
-    public Long getsellerIdDTO() {
+    public Long getSellerIdDTO() {
         return sellerIdDTO;
     }
 
@@ -36,7 +38,12 @@ public class SellerDTO {
         return phoneNumberDTO;
     }
 
-    public void setsellerIdDTO(Long sellerIdDTO) {
+
+    public int getTaxNumberDTO() {
+        return taxNumberDTO;
+    }
+
+    public void setSellerIdDTO(Long sellerIdDTO) {
         sellerIdDTO = sellerIdDTO;
     }
 
@@ -48,7 +55,11 @@ public class SellerDTO {
         this.emailDTO = emailDTO;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumberDTO(int phoneNumberDTO) {
         this.phoneNumberDTO = phoneNumberDTO;
+    }
+
+    public void setTaxNumberDTO(int taxNumberDTO) {
+        this.taxNumberDTO = taxNumberDTO;
     }
 }

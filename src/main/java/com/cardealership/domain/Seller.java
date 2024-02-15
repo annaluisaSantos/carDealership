@@ -12,12 +12,14 @@ public class Seller {
     private String name;
     private String email;
     private int phoneNumber;
+    private int taxNumber;
 
-    public Seller(Long standId, String name, String email, int phoneNumber) {
+    public Seller(Long standId, String name, String email, int phoneNumber, int taxNumber) {
         this.StandId = standId;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.taxNumber = taxNumber;
     }
 
     public Long getStandId() {
@@ -36,6 +38,10 @@ public class Seller {
         return phoneNumber;
     }
 
+    public int getTaxNumber() {
+        return taxNumber;
+    }
+
     public void setStandId(Long standId) {
         StandId = standId;
     }
@@ -51,4 +57,9 @@ public class Seller {
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public void setTaxNumber(int taxNumber) {
+        this.taxNumber = taxNumber;
+    }
+
 }
