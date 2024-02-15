@@ -8,39 +8,39 @@ public class VehicleModelDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long modelId;
-    private String name;
+    private Long modelIdSTO;
+    private String nameDTO;
 
     @OneToMany
-    private VehicleBrandDTO vehicleBrand;
+    private VehicleBrandDTO vehicleBrandIdDTO;
 
-    public VehicleModelDTO(Long modelId, String name, VehicleBrandDTO vehicleBrand) {
-        this.modelId = modelId;
-        this.name = name;
-        this.vehicleBrand = vehicleBrand;
+    public VehicleModelDTO(Long modelIdSTO, String nameDTO, VehicleBrandDTO vehicleBrandIdDTO) {
+        this.modelIdSTO = modelIdSTO;
+        this.nameDTO = nameDTO;
+        this.vehicleBrandIdDTO = vehicleBrandIdDTO;
     }
 
-    public Long getModelId() {
-        return modelId;
+    public Long getModelIdSTO() {
+        return modelIdSTO;
     }
 
-    public String getName() {
-        return name;
+    public String getNameDTO() {
+        return nameDTO;
     }
 
-    public VehicleBrandDTO getCarBrand() {
-        return vehicleBrand;
+    public VehicleBrandDTO getVehicleBrandIdDTO() {
+        return vehicleBrandIdDTO;
     }
 
-    public void setId(Long modelId) {
-        this.modelId = modelId;
+    public void setModelIdSTO(Long modelIdSTO) {
+        this.modelIdSTO = modelIdSTO;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameDTO(String nameDTO) {
+        this.nameDTO = nameDTO;
     }
 
-    public void setCarBrand(VehicleBrandDTO vehicleBrand) {
-        this.vehicleBrand = vehicleBrand;
+    public void setVehicleBrandIdDTO(VehicleBrandDTO vehicleBrandIdDTO) {
+        this.vehicleBrandIdDTO = vehicleBrandIdDTO;
     }
 }

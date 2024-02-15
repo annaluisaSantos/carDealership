@@ -22,7 +22,7 @@ public interface StandAPI {
 
     SellerDTO updateSeller(long sellerId, SellerDTO seller);
 
-    ResponseEntity<Seller> deleteSeller(long sellerId);
+    public SellerDTO deleteSeller(long sellerId);
 
     List<VehicleDTO> listVehicles();
 
@@ -30,7 +30,8 @@ public interface StandAPI {
 
     VehicleDTO updateVehicle(long vehicleId, VehicleDTO vehicle);
 
-    ResponseEntity<Vehicle> deleteVehicle(long vehicleId);
+    public VehicleDTO deleteVehicle(long vehicleId);
+
 
     VehicleDTO changeVehicleStatus(long vehicleId, VehicleDTO vehicle);
 }

@@ -42,7 +42,7 @@ public class VehicleModel {
         this.name = name;
     }
 
-    public void setCarBrand(VehicleBrand vehicleBrand) {
+    public void setVehicleBrand(VehicleBrand vehicleBrand) {
         this.vehicleBrand = vehicleBrand;
     }
 }
