@@ -5,38 +5,29 @@ import jakarta.persistence.*;
 
 @Entity
 public class VehicleModel {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long modelId;
     private String name;
 
-    @OneToMany
+    @ManyToOne(cascade = CascadeType.ALL)
     private VehicleBrand vehicleBrand;
 
-    public VehicleModel(Long modelId, String name, VehicleBrand vehicleBrand) {
-        this.modelId = modelId;
+    public VehicleModel(VehicleBrand vehicleBrand) {
         this.name = name;
         this.vehicleBrand = vehicleBrand;
     }
 
     public VehicleModel() {}
 
-    public Long getModelId() {
-        return modelId;
-    }
+
 
     public String getName() {
         return name;
     }
 
-    public VehicleBrand getCarBrand() {
+    public VehicleBrand getVehicleBrand() {
         return vehicleBrand;
     }
 
-    public void setId(Long modelId) {
-        this.modelId = modelId;
-    }
 
     public void setName(String name) {
         this.name = name;

@@ -2,10 +2,7 @@ package com.cardealership.services;
 
 import com.cardealership.domain.Seller;
 import com.cardealership.domain.Vehicle;
-import com.cardealership.dto.SellerDTO;
-import com.cardealership.dto.VehicleBrandDTO;
-import com.cardealership.dto.VehicleDTO;
-import com.cardealership.dto.VehicleModelDTO;
+import com.cardealership.dto.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -21,9 +18,12 @@ public interface StandAPI {
 
     List<VehicleBrandDTO> listBrands();
 
-    VehicleBrandDTO updateBrand(long BrandId, VehicleBrandDTO brand);
+    VehicleBrandDTO updateBrand(String name, VehicleBrandDTO brand);
 
-    VehicleBrandDTO deleteBrand(long BrandId);
+    VehicleBrandDTO deleteBrand(String name);
+
+
+
 
     /**
      * Methods for models
@@ -33,9 +33,12 @@ public interface StandAPI {
     VehicleModelDTO addModel(VehicleModelDTO model);
     List<VehicleModelDTO> listModels();
 
-    VehicleModelDTO updateModel(long ModelId, VehicleModelDTO model);
+    VehicleModelDTO updateModel(String name, VehicleModelDTO model);
 
-    VehicleModelDTO deleteModel(long ModelId);
+    VehicleModelDTO deleteModel(String name);
+
+
+
 
     /**
      * Methods for seller
@@ -48,6 +51,9 @@ public interface StandAPI {
     SellerDTO updateSeller(long sellerId, SellerDTO seller);
 
     public SellerDTO deleteSeller(long sellerId);
+
+
+
 
     /**
      * Methods for vehicles
@@ -62,4 +68,12 @@ public interface StandAPI {
     VehicleDTO deleteVehicle(long vehicleId);
 
     VehicleDTO changeVehicleStatus(long vehicleId, VehicleDTO vehicle);
+
+
+
+    StandDTO addStand(StandDTO stand);
+    List<StandDTO> listStands();
+    StandDTO updateStand(long standId, StandDTO updatedStand);
+    StandDTO deleteStand(long standId);
+}
 }

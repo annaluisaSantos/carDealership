@@ -1,46 +1,33 @@
 package com.cardealership.dto;
 
 
-import jakarta.persistence.*;
-
-@Entity
 public class VehicleModelDTO {
+    private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long modelIdSTO;
-    private String nameDTO;
+    private VehicleBrandDTO vehicleBrand;
 
-    @OneToMany
-    private VehicleBrandDTO vehicleBrandIdDTO;
-
-    public VehicleModelDTO(Long modelIdSTO, String nameDTO, VehicleBrandDTO vehicleBrandIdDTO) {
-        this.modelIdSTO = modelIdSTO;
-        this.nameDTO = nameDTO;
-        this.vehicleBrandIdDTO = vehicleBrandIdDTO;
+    public VehicleModelDTO(String nameDTO, VehicleBrandDTO vehicleBrandIdDTO) {
+        this.name = nameDTO;
+        this.vehicleBrand = vehicleBrandIdDTO;
     }
 
-    public Long getModelIdSTO() {
-        return modelIdSTO;
+
+
+    public String getName() {
+        return name;
     }
 
-    public String getNameDTO() {
-        return nameDTO;
+    public VehicleBrandDTO getVehicleBrandDTO() {
+        return vehicleBrand;
     }
 
-    public VehicleBrandDTO getVehicleBrandIdDTO() {
-        return vehicleBrandIdDTO;
+
+
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setModelIdSTO(Long modelIdSTO) {
-        this.modelIdSTO = modelIdSTO;
-    }
-
-    public void setNameDTO(String nameDTO) {
-        this.nameDTO = nameDTO;
-    }
-
-    public void setVehicleBrandIdDTO(VehicleBrandDTO vehicleBrandIdDTO) {
-        this.vehicleBrandIdDTO = vehicleBrandIdDTO;
+    public void setVehicleBrandDTO(VehicleBrandDTO vehicleBrandDTO) {
+        this.vehicleBrand = vehicleBrand;
     }
 }

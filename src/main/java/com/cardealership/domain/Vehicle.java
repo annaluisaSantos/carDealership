@@ -4,21 +4,28 @@ import com.cardealership.enums.FuelType;
 import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Columns;
 
 @Entity
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String licencePlate;
+
+    @ManyToOne
     private VehicleBrand brand;
+    @ManyToOne
     private VehicleModel model;
+    @Column(name="ano")
     private int year;
     private int numberOfSeats;
     private String traction;
+    @Enumerated(EnumType.ORDINAL)
     private FuelType fuelType;
     private String color;
     private String type;
+    @Enumerated(EnumType.ORDINAL)
     private State state;
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
     private double sellingPrice;
     private double purchasePrice;

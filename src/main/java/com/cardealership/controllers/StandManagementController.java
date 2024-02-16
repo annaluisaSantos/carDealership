@@ -35,7 +35,7 @@ public class StandManagementController {
      * @param seller
      * @return seller
      */
-    @PostMapping("/seller")
+    @PostMapping("/addSeller")
     public ResponseEntity<SellerDTO> addSeller(@RequestBody SellerDTO seller) {
         SellerDTO addedSeller = standAPI.createSeller(seller);
         return new ResponseEntity<>(addedSeller, HttpStatus.CREATED);
@@ -183,7 +183,7 @@ public class StandManagementController {
      * @return brand updated
      */
     @PutMapping("/updateBrand/{brandId}")
-    public ResponseEntity<VehicleBrandDTO> updateBrand(@PathVariable Long brandId, @RequestBody VehicleBrandDTO updatedBrand) {
+    public ResponseEntity<VehicleBrandDTO> updateBrand(@PathVariable int brandId, @RequestBody VehicleBrandDTO updatedBrand) {
         VehicleBrandDTO brand = standAPI.updateBrand(brandId, updatedBrand);
         return new ResponseEntity<>(brand, HttpStatus.OK);
     }
@@ -194,7 +194,7 @@ public class StandManagementController {
      * @return
      */
     @DeleteMapping("/deleteBrand/{brandId}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long brandId) {
+    public ResponseEntity<Void> deleteBrand(@PathVariable int brandId) {
         standAPI.deleteBrand(brandId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

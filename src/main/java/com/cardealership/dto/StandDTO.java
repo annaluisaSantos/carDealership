@@ -5,10 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
+
 public class StandDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long StandIdDTO;
     private String nameDTO;
     private int phoneNumberDTO;

@@ -5,10 +5,8 @@ import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
 import jakarta.persistence.*;
 
-@Entity
 public class VehicleDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private String licencePlateDTO;
     private VehicleBrandDTO brandDTO;
     private VehicleModelDTO modelDTO;

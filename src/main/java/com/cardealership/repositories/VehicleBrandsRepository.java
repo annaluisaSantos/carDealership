@@ -3,5 +3,9 @@ package com.cardealership.repositories;
 import com.cardealership.domain.VehicleBrand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VehicleBrandsRepository extends JpaRepository<VehicleBrand, Long> {
+import java.util.Optional;
+
+public interface VehicleBrandsRepository extends JpaRepository<VehicleBrand, String> {
+    Optional<VehicleBrand> findByName(String name);
+
 }
