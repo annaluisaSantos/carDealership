@@ -4,9 +4,11 @@ import com.cardealership.domain.*;
 import com.cardealership.dto.*;
 import com.cardealership.repositories.*;
 import com.cardealership.services.StandAPI;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +39,34 @@ public class StandApiImpl implements StandAPI {
     }
 
     @Override
+    public List<VehicleBrandDTO> listBrands() {
+        List<VehicleBrand> listBrands = vehicleBrandRepository.findAll();
+        return listBrands.stream().map(brand -> new VehicleBrandDTO(brand.getId(), brand.getName())).collect(Collectors.toList());
+    }
+
+    @Override
+    public VehicleBrandDTO updateBrand(long BrandId, VehicleBrandDTO brand) {
+        Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(BrandId);
+        if (brandOptional.isPresent()) {
+            VehicleBrand vehicleBrand = brandOptional.get();
+            vehicleBrand.setName(brand.getNameDTO());
+            vehicleBrand = vehicleBrandRepository.save(vehicleBrand);
+            return new VehicleBrandDTO(vehicleBrand.getId(), vehicleBrand.getName());
+        }
+        return null;
+    }
+
+    @Override
+    public VehicleBrandDTO deleteBrand(long BrandId) {
+        Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(BrandId);
+        if (brandOptional.isPresent()) {
+            vehicleBrandRepository.delete(brandOptional.get());
+            return new VehicleBrandDTO(brandOptional.get().getId(), brandOptional.get().getName());
+        }
+        return null;
+    }
+
+    @Override
     public VehicleModelDTO addModel(VehicleModelDTO modelDTO) {
         Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(modelDTO.getVehicleBrandIdDTO().getIdDTO());
         if (brandOptional.isPresent()) {
@@ -44,8 +74,46 @@ public class StandApiImpl implements StandAPI {
             model = vehicleModelRepository.save(model);
             return new VehicleModelDTO(model.getModelId(), model.getName(), new VehicleBrandDTO(model.getCarBrand().getId(), model.getCarBrand().getName()));
         }
-        return null; // Adicione tratamento para quando a marca não for encontrada
+        return null;
     }
+
+    @Override
+    public List<VehicleModelDTO> listModels() {
+        List<VehicleModel> listModels = vehicleModelRepository.findAll();
+        return listModels.stream()
+                .map(model -> new VehicleModelDTO(model.getModelId(), model.getName(), mapToDTO(model.getCarBrand())))
+                .collect(Collectors.toList());
+    }
+    private VehicleBrandDTO mapToDTO(VehicleBrand vehicleBrand) {
+        return new VehicleBrandDTO(vehicleBrand.getId(), vehicleBrand.getName());
+    }
+
+
+    @Override
+    public VehicleModelDTO updateModel(long modelId, VehicleModelDTO updatedModel) {
+        Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(modelId);
+
+        if (modelOptional.isPresent()) {
+            VehicleModel model = modelOptional.get();
+            model.setName(updatedModel.getNameDTO());
+            VehicleModel savedModel = vehicleModelRepository.save(model);
+        } else {
+            throw new EntityNotFoundException("Model not found " + modelId);
+        }
+        return null;
+    }
+
+    @Override
+    public VehicleModelDTO deleteModel(long modelId) {
+        Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(modelId);
+        if (modelOptional.isPresent()) {
+            vehicleModelRepository.delete(modelOptional.get());
+            return new VehicleModelDTO(modelOptional.get().getModelId(), modelOptional.get().getName(), new VehicleBrandDTO(modelOptional.get().getCarBrand().getId(), modelOptional.get().getCarBrand().getName()));
+        } else {
+            throw new EntityNotFoundException("Model not found: " + modelId);
+        }
+    }
+
 
     @Override
     public List<SellerDTO> listSellers() {
@@ -163,7 +231,7 @@ public class StandApiImpl implements StandAPI {
             );
         }
 
-        return null; // Adicione tratamento para quando a marca ou modelo não forem encontrados
+        return null;
     }
 
     @Override
@@ -173,11 +241,9 @@ public class StandApiImpl implements StandAPI {
             Vehicle vehicle = vehicleOptional.get();
             Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(vehicleDTO.getBrandDTO().getIdDTO());
             Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getModelIdSTO());
-
             if (brandOptional.isPresent() && modelOptional.isPresent()) {
                 VehicleBrand brand = brandOptional.get();
                 VehicleModel model = modelOptional.get();
-
                 vehicle.setLicencePlate(vehicleDTO.getLicencePlateDTO());
                 vehicle.setBrand(brand);
                 vehicle.setModel(model);
@@ -194,9 +260,7 @@ public class StandApiImpl implements StandAPI {
                 vehicle.setKms(vehicleDTO.getKmsDTO());
                 vehicle.setNumberOfDoors(vehicleDTO.getNumberOfDoorsDTO());
                 vehicle.setNumberOfWheels(vehicleDTO.getNumberOfWheelsDTO());
-
                 vehicle = vehicleRepository.save(vehicle);
-
                 return new VehicleDTO(
                         vehicle.getLicencePlate(),
                         new VehicleBrandDTO(vehicle.getBrand().getId(), vehicle.getBrand().getName()),
@@ -217,7 +281,7 @@ public class StandApiImpl implements StandAPI {
                 );
             }
         }
-        return null; // Adicione tratamento para quando o veículo, marca ou modelo não forem encontrados
+        return null;
     }
 
     @Override
@@ -274,6 +338,6 @@ public class StandApiImpl implements StandAPI {
                     vehicle.getNumberOfWheels()
             );
         }
-        return null; // Adicione tratamento para quando o veículo não for encontrado
+        return null;
     }
 }

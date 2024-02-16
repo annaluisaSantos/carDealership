@@ -12,10 +12,35 @@ import java.util.List;
 
 public interface StandAPI {
 
+    /**
+     * Methods for brands
+     * @param brand
+     * @return
+     */
     VehicleBrandDTO addBrand(VehicleBrandDTO brand);
 
-    VehicleModelDTO addModel(VehicleModelDTO model);
+    List<VehicleBrandDTO> listBrands();
 
+    VehicleBrandDTO updateBrand(long BrandId, VehicleBrandDTO brand);
+
+    VehicleBrandDTO deleteBrand(long BrandId);
+
+    /**
+     * Methods for models
+     * @param model
+     * @return
+     */
+    VehicleModelDTO addModel(VehicleModelDTO model);
+    List<VehicleModelDTO> listModels();
+
+    VehicleModelDTO updateModel(long ModelId, VehicleModelDTO model);
+
+    VehicleModelDTO deleteModel(long ModelId);
+
+    /**
+     * Methods for seller
+     * @return
+     */
     List<SellerDTO> listSellers();
 
     SellerDTO createSeller(SellerDTO seller);
@@ -24,14 +49,17 @@ public interface StandAPI {
 
     public SellerDTO deleteSeller(long sellerId);
 
+    /**
+     * Methods for vehicles
+     * @return
+     */
     List<VehicleDTO> listVehicles();
 
     VehicleDTO addVehicle(VehicleDTO vehicle);
 
     VehicleDTO updateVehicle(long vehicleId, VehicleDTO vehicle);
 
-    public VehicleDTO deleteVehicle(long vehicleId);
-
+    VehicleDTO deleteVehicle(long vehicleId);
 
     VehicleDTO changeVehicleStatus(long vehicleId, VehicleDTO vehicle);
 }
