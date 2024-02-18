@@ -33,8 +33,8 @@ public class StandApiImpl implements StandAPI {
     @Override
     public VehicleBrandDTO addBrand(VehicleBrandDTO brandDTO) {
         VehicleBrand newBrand = new VehicleBrand(brandDTO.getName());
-        VehicleBrand savedBrand = vehicleBrandRepository.save(newBrand);
-        return new VehicleBrandDTO(savedBrand.getName());
+        newBrand = vehicleBrandRepository.save(newBrand);
+        return new VehicleBrandDTO(newBrand.getName());
     }
 
     @Override
@@ -66,13 +66,33 @@ public class StandApiImpl implements StandAPI {
         }
     }
 
+    private VehicleBrand getVehicleBrandByName(String brandName) {
+        Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findByName(brandName);
+
+        if (brandOptional.isPresent()) {
+            return brandOptional.get();
+        } else {
+            throw new EntityNotFoundException("Marca de veículo não encontrada com o nome: " + brandName);
+        }
+    }
+
+    private VehicleModel getVehicleModelByName(String modelName) {
+        Optional<VehicleModel> modelOptional = vehicleModelRepository.findByName(modelName);
+        if (modelOptional.isPresent()) {
+            return modelOptional.get();
+        } else {
+            throw new EntityNotFoundException("Modelnot found: " + modelName);
+        }
+    }
+
     @Override
     public VehicleModelDTO addModel(VehicleModelDTO modelDTO) {
-        VehicleBrand brand = getVehicleBrandByName(modelDTO.getVehicleBrandIdDTO().getNameDTO());
-        VehicleModel newModel = new VehicleModel(modelDTO.getName(). brand);
+        VehicleBrand brand = getVehicleBrandByName(modelDTO.getVehicleBrandDTO().getName());
+        VehicleModel newModel = new VehicleModel(modelDTO.getName(), brand);
         VehicleModel savedModel = vehicleModelRepository.save(newModel);
         return new VehicleModelDTO(savedModel.getName(), new VehicleBrandDTO(brand.getName()));
     }
+
 
     @Override
     public List<VehicleModelDTO> listModels() {

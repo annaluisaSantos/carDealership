@@ -11,7 +11,7 @@ public class VehicleModel {
     @ManyToOne(cascade = CascadeType.ALL)
     private VehicleBrand vehicleBrand;
 
-    public VehicleModel(VehicleBrand vehicleBrand) {
+    public VehicleModel(String name, VehicleBrand vehicleBrand) {
         this.name = name;
         this.vehicleBrand = vehicleBrand;
     }

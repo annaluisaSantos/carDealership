@@ -76,4 +76,4 @@ public interface StandAPI {
     StandDTO updateStand(long standId, StandDTO updatedStand);
     StandDTO deleteStand(long standId);
 }
-}
+

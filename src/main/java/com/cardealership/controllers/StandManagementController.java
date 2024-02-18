@@ -19,7 +19,7 @@ public class StandManagementController {
         this.standAPI = standAPI;
     }
 
-    // ================== SELLER =================
+    // ================================================= SELLER ===================================================
     /**
      * Get list of all sellers
      * @return List of sellers
@@ -65,7 +65,7 @@ public class StandManagementController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // ================== VEHICLES =================
+    // ====================================================== VEHICLES ============================================
 
     /**
      * Returns a list of all vehicles
@@ -109,7 +109,7 @@ public class StandManagementController {
     }
 
 
-    // ================== VEHICLES MODELS=================
+    // ========================================== VEHICLES MODELS =================================================
 
     /**
      * Get a list of all models
@@ -130,30 +130,30 @@ public class StandManagementController {
     }
 
     /**
-     * Update a model by ID
-     * @param modelId
+     * Update a model by name
+     * @param name
      * @param updatedModel
      * @return model updated
      */
     @PutMapping("/updateModel/{modelId}")
-    public ResponseEntity<VehicleModelDTO> updateModel(@PathVariable Long modelId, @RequestBody VehicleModelDTO updatedModel) {
-        VehicleModelDTO model = standAPI.updateModel(modelId, updatedModel);
+    public ResponseEntity<VehicleModelDTO> updateModel(@PathVariable String name, @RequestBody VehicleModelDTO updatedModel) {
+        VehicleModelDTO model = standAPI.updateModel(name, updatedModel);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     /**
-     * Delete model by ID
-     * @param modelId
+     * Delete model by name
+     * @param name
      * @return no content
      */
     @DeleteMapping("/deleteModel/{modelId}")
-    public ResponseEntity<Void> deleteModel(@PathVariable Long modelId) {
-        standAPI.deleteModel(modelId);
+    public ResponseEntity<VehicleModelDTO> deleteModel(@PathVariable String name) {
+        standAPI.deleteModel(name);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    // ================== VEHICLES BRANDS=================
+    // =============================================== VEHICLES BRANDS ==================================================
 
     /**
      * Method to add new brand
@@ -161,10 +161,11 @@ public class StandManagementController {
      * @return brand
      */
     @PostMapping("/addBrand")
-    public ResponseEntity<VehicleBrandDTO> addBrand(@RequestBody VehicleBrandDTO brand) {
+    public ResponseEntity<VehicleBrandDTO> addBrand (@RequestBody VehicleBrandDTO brand) {
         VehicleBrandDTO addedBrand = standAPI.addBrand(brand);
         return new ResponseEntity<>(addedBrand, HttpStatus.CREATED);
     }
+
 
     /**
      * Get a list of all brands
@@ -177,25 +178,54 @@ public class StandManagementController {
     }
 
     /**
-     * Update a brand by ID
-     * @param brandId
+     * Update a brand by name
+     * @param name
      * @param updatedBrand
      * @return brand updated
      */
     @PutMapping("/updateBrand/{brandId}")
-    public ResponseEntity<VehicleBrandDTO> updateBrand(@PathVariable int brandId, @RequestBody VehicleBrandDTO updatedBrand) {
-        VehicleBrandDTO brand = standAPI.updateBrand(brandId, updatedBrand);
+    public ResponseEntity<VehicleBrandDTO> updateBrand(@PathVariable String name, @RequestBody VehicleBrandDTO updatedBrand) {
+        VehicleBrandDTO brand = standAPI.updateBrand(name, updatedBrand);
         return new ResponseEntity<>(brand, HttpStatus.OK);
     }
 
     /**
-     * Delete a
-     * @param brandId
+     * Delete a brand by name
+     * @param name
      * @return
      */
     @DeleteMapping("/deleteBrand/{brandId}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable int brandId) {
-        standAPI.deleteBrand(brandId);
+    public ResponseEntity<Void> deleteBrand(@PathVariable String name) {
+        standAPI.deleteBrand(name);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+//    =================================================== Stand =================================================
+
+@PostMapping("/addStand")
+public ResponseEntity<StandDTO> addStand(@RequestBody StandDTO stand) {
+    StandDTO addedStand = standAPI.addStand(stand);
+    return new ResponseEntity<>(addedStand, HttpStatus.CREATED);
+}
+
+@GetMapping("/listStands")
+public ResponseEntity<List<StandDTO>> listStands() {
+    List<StandDTO> stands = standAPI.listStands();
+    return new ResponseEntity<>(stands, HttpStatus.OK);
+}
+
+@PutMapping("/updateStand/{standId}")
+public ResponseEntity<StandDTO> updateStand(@PathVariable Long standId, @RequestBody StandDTO updatedStand) {
+    StandDTO stand = standAPI.updateStand(standId, updatedStand);
+    return new ResponseEntity<>(stand, HttpStatus.OK);
+}
+
+@DeleteMapping("/deleteStand/{standId}")
+public ResponseEntity<Void> deleteStand(@PathVariable Long standId) {
+    standAPI.deleteStand(standId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+}
+
+
 }

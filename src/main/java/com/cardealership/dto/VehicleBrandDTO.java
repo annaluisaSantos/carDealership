@@ -2,11 +2,10 @@ package com.cardealership.dto;
 
 
 public class VehicleBrandDTO {
-
     private String name;
 
-    public VehicleBrandDTO( String nameDTO) {
-        this.name = nameDTO;
+    public VehicleBrandDTO( String name) {
+        this.name = name;
     }
 
     public String getName() {
