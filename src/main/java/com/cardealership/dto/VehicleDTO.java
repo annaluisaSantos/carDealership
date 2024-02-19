@@ -3,7 +3,7 @@ package com.cardealership.dto;
 import com.cardealership.enums.FuelType;
 import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
-import jakarta.persistence.*;
+
 
 public class VehicleDTO {
 
@@ -24,10 +24,12 @@ public class VehicleDTO {
     private int numberOfDoorsDTO;
     private int numberOfWheelsDTO;
 
+    public VehicleDTO() { }
+
     public VehicleDTO(String licencePlateDTO, VehicleBrandDTO brandDTO,
                       VehicleModelDTO modelDTO, int yearDTO, int numberOfSeatsDTO,
                       String tractionDTO, FuelType fuelTypeDTO, String colorDTO,
-                      String typeDTO, State stateDTO, Status statusDTO,
+                      State stateDTO, Status statusDTO,
                       double sellingPriceDTO, double purchasePriceDTO, double kmsDTO,
                       int numberOfDoorsDTO, int numberOfWheelsDTO) {
         this.licencePlateDTO = licencePlateDTO;
@@ -38,7 +40,6 @@ public class VehicleDTO {
         this.tractionDTO = tractionDTO;
         this.fuelTypeDTO = fuelTypeDTO;
         this.colorDTO = colorDTO;
-        TypeDTO = typeDTO;
         this.stateDTO = stateDTO;
         this.statusDTO = statusDTO;
         this.sellingPriceDTO = sellingPriceDTO;
@@ -144,9 +145,6 @@ public class VehicleDTO {
         this.colorDTO = colorDTO;
     }
 
-    public void setTypeDTO(String typeDTO) {
-        TypeDTO = typeDTO;
-    }
 
     public void setStateDTO(State stateDTO) {
         this.stateDTO = stateDTO;

@@ -35,7 +35,7 @@ public class Vehicle {
 
     public Vehicle(String licencePlate, VehicleBrand brand, VehicleModel model,
                    int year, int numberOfSeats, String traction, FuelType fuelType,
-                   String color, String type, State state, Status status,
+                   String color, State state, Status status,
                    double sellingPrice, double purchasePrice, double kms,
                    int numberOfDoors, int numberOfWheels) {
         this.licencePlate = licencePlate;
@@ -46,7 +46,6 @@ public class Vehicle {
         this.traction = traction;
         this.fuelType = fuelType;
         this.color = color;
-        this.type = type;
         this.state = state;
         this.status = status;
         this.sellingPrice = sellingPrice;
@@ -92,9 +91,7 @@ public class Vehicle {
         return color;
     }
 
-    public String getType() {
-        return type;
-    }
+
 
     public State getState() {
         return state;
@@ -156,9 +153,6 @@ public class Vehicle {
         this.color = color;
     }
 
-    public void setType(String type) {
-        type = type;
-    }
 
     public void setState(State state) {
         this.state = state;

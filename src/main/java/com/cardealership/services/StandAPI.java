@@ -46,7 +46,7 @@ public interface StandAPI {
      */
     List<SellerDTO> listSellers();
 
-    SellerDTO createSeller(SellerDTO seller);
+    SellerDTO addSeller(SellerDTO seller);
 
     SellerDTO updateSeller(long sellerId, SellerDTO seller);
 

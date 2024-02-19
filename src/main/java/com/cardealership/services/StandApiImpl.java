@@ -4,6 +4,7 @@ import com.cardealership.domain.*;
 import com.cardealership.dto.*;
 import com.cardealership.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,27 +30,27 @@ public class StandApiImpl implements StandAPI {
     @Autowired
     private StandRepository standRepository;
 
-
+//====================================== BRANDS ===========================================================
     @Override
     public VehicleBrandDTO addBrand(VehicleBrandDTO brandDTO) {
         VehicleBrand newBrand = new VehicleBrand(brandDTO.getName());
-        newBrand = vehicleBrandRepository.save(newBrand);
+        vehicleBrandRepository.save(newBrand);
         return new VehicleBrandDTO(newBrand.getName());
     }
 
     @Override
     public List<VehicleBrandDTO> listBrands() {
-        List<VehicleBrand> brands = vehicleBrandRepository.findAll();
-        return brands.stream().map(brand -> new VehicleBrandDTO(brand.getName())).collect(Collectors.toList());
+         return vehicleBrandRepository.findAll().stream().map(brand
+             -> new VehicleBrandDTO(brand.getName())).collect(Collectors.toList());
     }
 
     @Override
     public VehicleBrandDTO updateBrand(String name, VehicleBrandDTO brand) {
-        Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(name);
+        Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findByName(name);
         if (brandOptional.isPresent()) {
             VehicleBrand vehicleBrand = brandOptional.get();
             vehicleBrand.setName(brand.getName());
-            vehicleBrand = vehicleBrandRepository.save(vehicleBrand);
+            vehicleBrandRepository.save(vehicleBrand);
             return new VehicleBrandDTO(vehicleBrand.getName());
         }
         return null;
@@ -72,9 +73,11 @@ public class StandApiImpl implements StandAPI {
         if (brandOptional.isPresent()) {
             return brandOptional.get();
         } else {
-            throw new EntityNotFoundException("Marca de veículo não encontrada com o nome: " + brandName);
+            throw new EntityNotFoundException("Brand name not found: " + brandName);
         }
     }
+
+//====================================== MODELS ===========================================================
 
     private VehicleModel getVehicleModelByName(String modelName) {
         Optional<VehicleModel> modelOptional = vehicleModelRepository.findByName(modelName);
@@ -86,11 +89,10 @@ public class StandApiImpl implements StandAPI {
     }
 
     @Override
-    public VehicleModelDTO addModel(VehicleModelDTO modelDTO) {
-        VehicleBrand brand = getVehicleBrandByName(modelDTO.getVehicleBrandDTO().getName());
-        VehicleModel newModel = new VehicleModel(modelDTO.getName(), brand);
-        VehicleModel savedModel = vehicleModelRepository.save(newModel);
-        return new VehicleModelDTO(savedModel.getName(), new VehicleBrandDTO(brand.getName()));
+    public VehicleModelDTO addModel(VehicleModelDTO model) {
+        VehicleModel newModel = new VehicleModel(model.getName(), new VehicleBrand(model.getVehicleBrandDTO().getName()));
+        vehicleModelRepository.save(newModel);
+        return new VehicleModelDTO(newModel.getName(), new VehicleBrandDTO(newModel.getVehicleBrand().getName()));
     }
 
 
@@ -130,6 +132,7 @@ public class StandApiImpl implements StandAPI {
         }
     }
 
+//====================================== SELLERS ===========================================================
 
     @Override
     public List<SellerDTO> listSellers() {
@@ -140,7 +143,7 @@ public class StandApiImpl implements StandAPI {
     }
 
     @Override
-    public SellerDTO createSeller(SellerDTO sellerDTO) {
+    public SellerDTO addSeller(SellerDTO sellerDTO) {
         Seller seller = new Seller(sellerDTO.getSellerIdDTO(), sellerDTO.getNameDTO(), sellerDTO.getEmailDTO(), sellerDTO.getPhoneNumberDTO(), sellerDTO.getTaxNumberDTO());
         seller = sellerRepository.save(seller);
         return new SellerDTO(seller.getStandId(), seller.getName(), seller.getEmail(), seller.getPhoneNumber(), seller.getTaxNumber());
@@ -172,6 +175,8 @@ public class StandApiImpl implements StandAPI {
         return null;
     }
 
+//====================================== VEHICLES ===========================================================
+
     @Override
     public List<VehicleDTO> listVehicles() {
         List<Vehicle> vehicles = vehicleRepository.findAll();
@@ -180,13 +185,19 @@ public class StandApiImpl implements StandAPI {
                         new VehicleModelDTO(vehicle.getModel().getName(),
                                 new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())),
                         vehicle.getYear(), vehicle.getNumberOfSeats(), vehicle.getTraction(),
-                        vehicle.getFuelType(), vehicle.getColor(), vehicle.getType(), vehicle.getState(),
+                        vehicle.getFuelType(), vehicle.getColor(), vehicle.getState(),
                         vehicle.getStatus(), vehicle.getSellingPrice(), vehicle.getPurchasePrice(),
                         vehicle.getKms(), vehicle.getNumberOfDoors(), vehicle.getNumberOfWheels())
         ).collect(Collectors.toList());
     }
 
     @Override
+//    public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
+//        if(vehicleRepository.exists(vehicleDTO.getLicencePlateDTO())){
+//            throw new NotImplementedException("Vehicle already exists: " + vehicleDTO.getLicencePlateDTO().orElse(null));
+//        }
+//        vehicleRepository.save(vehicleDTO);
+//    }
     public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
         Optional<VehicleBrand> brandOptional = vehicleBrandRepository.findById(vehicleDTO.getBrandDTO().getName());
         Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getName());
@@ -204,7 +215,6 @@ public class StandApiImpl implements StandAPI {
                     vehicleDTO.getTractionDTO(),
                     vehicleDTO.getFuelTypeDTO(),
                     vehicleDTO.getColorDTO(),
-                    vehicleDTO.getTypeDTO(),
                     vehicleDTO.getStateDTO(),
                     vehicleDTO.getStatusDTO(),
                     vehicleDTO.getSellingPriceDTO(),
@@ -216,7 +226,7 @@ public class StandApiImpl implements StandAPI {
 
             vehicle = vehicleRepository.save(vehicle);
 
-            return new VehicleDTO(
+            vehicleDTO =  new VehicleDTO(
                     vehicle.getLicencePlate(),
                     new VehicleBrandDTO( vehicle.getBrand().getName()),
                     new VehicleModelDTO(vehicle.getModel().getName(),
@@ -226,7 +236,6 @@ public class StandApiImpl implements StandAPI {
                     vehicle.getTraction(),
                     vehicle.getFuelType(),
                     vehicle.getColor(),
-                    vehicle.getType(),
                     vehicle.getState(),
                     vehicle.getStatus(),
                     vehicle.getSellingPrice(),
@@ -237,8 +246,9 @@ public class StandApiImpl implements StandAPI {
             );
         }
 
-        return null;
+        return vehicleDTO;
     }
+
 
     @Override
     public VehicleDTO updateVehicle(long vehicleId, VehicleDTO vehicleDTO) {
@@ -258,7 +268,6 @@ public class StandApiImpl implements StandAPI {
                 vehicle.setTraction(vehicleDTO.getTractionDTO());
                 vehicle.setFuelType(vehicleDTO.getFuelTypeDTO());
                 vehicle.setColor(vehicleDTO.getColorDTO());
-                vehicle.setType(vehicleDTO.getTypeDTO());
                 vehicle.setState(vehicleDTO.getStateDTO());
                 vehicle.setStatus(vehicleDTO.getStatusDTO());
                 vehicle.setSellingPrice(vehicleDTO.getSellingPriceDTO());
@@ -277,7 +286,6 @@ public class StandApiImpl implements StandAPI {
                         vehicle.getTraction(),
                         vehicle.getFuelType(),
                         vehicle.getColor(),
-                        vehicle.getType(),
                         vehicle.getState(),
                         vehicle.getStatus(),
                         vehicle.getSellingPrice(),
@@ -308,7 +316,6 @@ public class StandApiImpl implements StandAPI {
                     vehicle.getTraction(),
                     vehicle.getFuelType(),
                     vehicle.getColor(),
-                    vehicle.getType(),
                     vehicle.getState(),
                     vehicle.getStatus(),
                     vehicle.getSellingPrice(),
@@ -338,7 +345,6 @@ public class StandApiImpl implements StandAPI {
                     vehicle.getTraction(),
                     vehicle.getFuelType(),
                     vehicle.getColor(),
-                    vehicle.getType(),
                     vehicle.getState(),
                     vehicle.getStatus(),
                     vehicle.getSellingPrice(),
@@ -351,7 +357,7 @@ public class StandApiImpl implements StandAPI {
         return null;
     }
 
-
+//=========================================STANDS=======================================================================
     @Override
     public StandDTO addStand(StandDTO standDTO) {
         Stand newStand = new Stand(standDTO.getStandIdDTO(), standDTO.getNameDTO(), standDTO.getPhoneNumberDTO(), standDTO.getEmailDTO());

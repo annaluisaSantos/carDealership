@@ -6,9 +6,11 @@ public class VehicleModelDTO {
 
     private VehicleBrandDTO vehicleBrand;
 
-    public VehicleModelDTO(String nameDTO, VehicleBrandDTO vehicleBrandIdDTO) {
-        this.name = nameDTO;
-        this.vehicleBrand = vehicleBrandIdDTO;
+    public VehicleModelDTO() { }
+
+    public VehicleModelDTO(String name, VehicleBrandDTO vehicleBrand) {
+        this.name = name;
+        this.vehicleBrand = vehicleBrand;
     }
 
 
@@ -28,6 +30,7 @@ public class VehicleModelDTO {
     }
 
     public void setVehicleBrandDTO(VehicleBrandDTO vehicleBrandDTO) {
-        this.vehicleBrand = vehicleBrand;
+        this.vehicleBrand = vehicleBrandDTO;
     }
+
 }
