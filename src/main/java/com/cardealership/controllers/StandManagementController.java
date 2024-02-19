@@ -1,6 +1,7 @@
 package com.cardealership.controllers;
 
 import com.cardealership.dto.*;
+import com.cardealership.repositories.VehicleRepository;
 import com.cardealership.services.StandAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -14,6 +15,7 @@ import java.util.List;
 public class StandManagementController {
 
     private StandAPI standAPI;
+
     @Autowired
     public StandManagementController(StandAPI standAPI) {
         this.standAPI = standAPI;
@@ -104,9 +106,9 @@ public class StandManagementController {
         }
     }
 
- //==============================================================SELLER =================================================================================================
+    //==============================================================SELLER =================================================================================================
     @PostMapping("/addSeller")
-    public ResponseEntity<SellerDTO> addSeller (@RequestBody SellerDTO seller) {
+    public ResponseEntity<SellerDTO> addSeller(@RequestBody SellerDTO seller) {
         try {
             return ResponseEntity.ok(standAPI.addSeller(seller));
         } catch (Exception e) {
@@ -186,55 +188,79 @@ public class StandManagementController {
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }}
-    // ==========================================================VEHICLE=====================================================================================================
-        @GetMapping("/listVehicles")
-        public ResponseEntity<List<VehicleDTO>> listVehicles() {
-            try {
-                return ResponseEntity.ok(standAPI.listVehicles());
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        @PostMapping("/addVehicle")
-        public ResponseEntity<VehicleDTO> addVehicle(@RequestBody VehicleDTO vehicle) {
-            try {
-                return ResponseEntity.ok(standAPI.addVehicle(vehicle));
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        @PutMapping("/updateVehicle/{vin}")
-        public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicle) {
-            try {
-                return ResponseEntity.ok(standAPI.updateVehicle(vin, updatedVehicle));
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        @DeleteMapping("/deleteVehicle/{vin}")
-        public ResponseEntity<Void> deleteVehicle(@PathVariable String vin) {
-            try {
-                VehicleDTO deletedVehicle = standAPI.deleteVehicle(vin);
-                if (deletedVehicle != null) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        @PutMapping("/vehicle/status/{vin}")
-        public ResponseEntity<VehicleDTO> changeVehicleStatus(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicleStatus) {
-            try {
-                return ResponseEntity.ok(standAPI.changeVehicleStatus(vin, updatedVehicleStatus));
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
         }
     }
+
+    // ==========================================================VEHICLE=====================================================================================================
+    @GetMapping("/listVehicles")
+    public ResponseEntity<List<VehicleDTO>> listVehicles() {
+        try {
+            return ResponseEntity.ok(standAPI.listVehicles());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/addVehicle")
+    public ResponseEntity<VehicleDTO> addVehicle(@RequestBody VehicleDTO vehicle) {
+        try {
+            return ResponseEntity.ok(standAPI.addVehicle(vehicle));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/updateVehicle/{vin}")
+    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicle) {
+        try {
+            return ResponseEntity.ok(standAPI.updateVehicle(vin, updatedVehicle));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deleteVehicle/{vin}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable String vin) {
+        try {
+            VehicleDTO deletedVehicle = standAPI.deleteVehicle(vin);
+            if (deletedVehicle != null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/vehicle/status/{vin}")
+    public ResponseEntity<VehicleDTO> changeVehicleStatus(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicleStatus) {
+        try {
+            return ResponseEntity.ok(standAPI.changeVehicleStatus(vin, updatedVehicleStatus));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/stock")
+    public ResponseEntity<List<VehicleDTO>> getStockVehicles() {
+        List<VehicleDTO> stockVehicles = standAPI.getStockVehicles();
+        try {
+            return new ResponseEntity<>(stockVehicles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/soldByBuyer/{buyerId}")
+        public ResponseEntity<List<VehicleDTO>> findAllVehicleByBuyer (@PathVariable("buyerId") int buyerId){
+            List<VehicleDTO> boughtByBuyer = standAPI.findAllVehicleByBuyer(buyerId);
+            try {
+                return new ResponseEntity<>(boughtByBuyer, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        }
+    }
+

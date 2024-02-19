@@ -2,11 +2,12 @@ package com.cardealership.services;
 
 import com.cardealership.domain.*;
 import com.cardealership.dto.*;
+import com.cardealership.enums.State;
 import com.cardealership.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class StandApiImpl implements StandAPI {
     @Autowired
     private StandRepository standRepository;
 
-//====================================== BRANDS ===========================================================
+    //====================================== BRANDS ===========================================================
     @Override
     public VehicleBrandDTO addBrand(VehicleBrandDTO brandDTO) {
         VehicleBrand newBrand = new VehicleBrand(brandDTO.getName());
@@ -40,8 +41,8 @@ public class StandApiImpl implements StandAPI {
 
     @Override
     public List<VehicleBrandDTO> listBrands() {
-         return vehicleBrandRepository.findAll().stream().map(brand
-             -> new VehicleBrandDTO(brand.getName())).collect(Collectors.toList());
+        return vehicleBrandRepository.findAll().stream().map(brand
+                -> new VehicleBrandDTO(brand.getName())).collect(Collectors.toList());
     }
 
     @Override
@@ -161,7 +162,7 @@ public class StandApiImpl implements StandAPI {
             seller = sellerRepository.save(seller);
             return new SellerDTO(seller.getStandId(), seller.getName(), seller.getEmail(), seller.getPhoneNumber(), seller.getTaxNumber());
         }
-        return null;
+        return sellerDTO;
     }
 
     @Override
@@ -191,119 +192,87 @@ public class StandApiImpl implements StandAPI {
         ).collect(Collectors.toList());
     }
 
-        @Override
-        public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
+    @Override
+    public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
+        Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getName());
+
+        if (modelOptional.isPresent()) {
+            VehicleModel model = modelOptional.get();
+
+            Vehicle vehicle = new Vehicle(
+                    vehicleDTO.getVin(),
+                    vehicleDTO.getLicencePlateDTO(),
+                    model,
+                    vehicleDTO.getYearDTO(),
+                    vehicleDTO.getNumberOfSeatsDTO(),
+                    vehicleDTO.getTractionDTO(),
+                    vehicleDTO.getFuelTypeDTO(),
+                    vehicleDTO.getColorDTO(),
+                    vehicleDTO.getStateDTO(),
+                    vehicleDTO.getStatusDTO(),
+                    vehicleDTO.getSellingPriceDTO(),
+                    vehicleDTO.getPurchasePriceDTO(),
+                    vehicleDTO.getKmsDTO(),
+                    vehicleDTO.getNumberOfDoorsDTO(),
+                    vehicleDTO.getIdBuyer(),
+                    vehicleDTO.getIdTransaction()
+            );
+
+            vehicle = vehicleRepository.save(vehicle);
+
+            return new VehicleDTO(
+                    vehicle.getVin(),
+                    vehicle.getLicencePlate(),
+                    new VehicleModelDTO(model.getName(),
+                            new VehicleBrandDTO(model.getVehicleBrand().getName())), vehicle.getYear(),
+                    vehicle.getNumberOfSeats(),
+                    vehicle.getTraction(),
+                    vehicle.getFuelType(),
+                    vehicle.getColor(),
+                    vehicle.getState(),
+                    vehicle.getStatus(),
+                    vehicle.getSellingPrice(),
+                    vehicle.getPurchasePrice(),
+                    vehicle.getKms(),
+                    vehicle.getNumberOfDoors(),
+                    vehicle.getIdBuyer(),
+                    vehicle.getIdTransaction());
+        }
+
+        return vehicleDTO;
+    }
+
+    @Override
+    public VehicleDTO updateVehicle(String vin, VehicleDTO vehicleDTO) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
+
+        if (vehicleOptional.isPresent()) {
+            Vehicle vehicle = vehicleOptional.get();
             Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getName());
 
             if (modelOptional.isPresent()) {
                 VehicleModel model = modelOptional.get();
-
-                Vehicle vehicle = new Vehicle(
-                        vehicleDTO.getVin(),
-                        vehicleDTO.getLicencePlateDTO(),
-                        model,
-                        vehicleDTO.getYearDTO(),
-                        vehicleDTO.getNumberOfSeatsDTO(),
-                        vehicleDTO.getTractionDTO(),
-                        vehicleDTO.getFuelTypeDTO(),
-                        vehicleDTO.getColorDTO(),
-                        vehicleDTO.getStateDTO(),
-                        vehicleDTO.getStatusDTO(),
-                        vehicleDTO.getSellingPriceDTO(),
-                        vehicleDTO.getPurchasePriceDTO(),
-                        vehicleDTO.getKmsDTO(),
-                        vehicleDTO.getNumberOfDoorsDTO(),
-                        vehicleDTO.getIdBuyer(),
-                        vehicleDTO.getIdTransaction()
-                );
-
+                vehicle.setVin(vehicleDTO.getVin());
+                vehicle.setLicencePlate(vehicleDTO.getLicencePlateDTO());
+                vehicle.setModel(model);
+                vehicle.setYear(vehicleDTO.getYearDTO());
+                vehicle.setNumberOfSeats(vehicleDTO.getNumberOfSeatsDTO());
+                vehicle.setTraction(vehicleDTO.getTractionDTO());
+                vehicle.setFuelType(vehicleDTO.getFuelTypeDTO());
+                vehicle.setColor(vehicleDTO.getColorDTO());
+                vehicle.setState(vehicleDTO.getStateDTO());
+                vehicle.setStatus(vehicleDTO.getStatusDTO());
+                vehicle.setSellingPrice(vehicleDTO.getSellingPriceDTO());
+                vehicle.setPurchasePrice(vehicleDTO.getPurchasePriceDTO());
+                vehicle.setKms(vehicleDTO.getKmsDTO());
+                vehicle.setNumberOfDoors(vehicleDTO.getNumberOfDoorsDTO());
                 vehicle = vehicleRepository.save(vehicle);
 
                 return new VehicleDTO(
                         vehicle.getVin(),
                         vehicle.getLicencePlate(),
                         new VehicleModelDTO(model.getName(),
-                                new VehicleBrandDTO(model.getVehicleBrand().getName())),                                vehicle.getYear(),
-                                vehicle.getNumberOfSeats(),
-                                vehicle.getTraction(),
-                                vehicle.getFuelType(),
-                                vehicle.getColor(),
-                                vehicle.getState(),
-                                vehicle.getStatus(),
-                                vehicle.getSellingPrice(),
-                                vehicle.getPurchasePrice(),
-                                vehicle.getKms(),
-                                vehicle.getNumberOfDoors(),
-                                vehicle.getIdBuyer(),
-                                vehicle.getIdTransaction());
-            }
-
-            return vehicleDTO;
-        }
-
-        @Override
-        public VehicleDTO updateVehicle(String vin, VehicleDTO vehicleDTO) {
-            Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
-
-            if (vehicleOptional.isPresent()) {
-                Vehicle vehicle = vehicleOptional.get();
-                Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getName());
-
-                if (modelOptional.isPresent()) {
-                    VehicleModel model = modelOptional.get();
-                    vehicle.setVin(vehicleDTO.getVin());
-                    vehicle.setLicencePlate(vehicleDTO.getLicencePlateDTO());
-                    vehicle.setModel(model);
-                    vehicle.setYear(vehicleDTO.getYearDTO());
-                    vehicle.setNumberOfSeats(vehicleDTO.getNumberOfSeatsDTO());
-                    vehicle.setTraction(vehicleDTO.getTractionDTO());
-                    vehicle.setFuelType(vehicleDTO.getFuelTypeDTO());
-                    vehicle.setColor(vehicleDTO.getColorDTO());
-                    vehicle.setState(vehicleDTO.getStateDTO());
-                    vehicle.setStatus(vehicleDTO.getStatusDTO());
-                    vehicle.setSellingPrice(vehicleDTO.getSellingPriceDTO());
-                    vehicle.setPurchasePrice(vehicleDTO.getPurchasePriceDTO());
-                    vehicle.setKms(vehicleDTO.getKmsDTO());
-                    vehicle.setNumberOfDoors(vehicleDTO.getNumberOfDoorsDTO());
-                    vehicle = vehicleRepository.save(vehicle);
-
-                    return new VehicleDTO(
-                            vehicle.getVin(),
-                            vehicle.getLicencePlate(),
-                            new VehicleModelDTO(model.getName(),
-                                    new VehicleBrandDTO(model.getVehicleBrand().getName())),                                    vehicle.getYear(),
-                                    vehicle.getNumberOfSeats(),
-                                    vehicle.getTraction(),
-                                    vehicle.getFuelType(),
-                                    vehicle.getColor(),
-                                    vehicle.getState(),
-                                    vehicle.getStatus(),
-                                    vehicle.getSellingPrice(),
-                                    vehicle.getPurchasePrice(),
-                                    vehicle.getKms(),
-                                    vehicle.getNumberOfDoors(),
-                                    vehicle.getIdBuyer(),
-                                    vehicle.getIdTransaction());
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        public VehicleDTO deleteVehicle(String vin) {
-            Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
-
-            if (vehicleOptional.isPresent()) {
-                Vehicle vehicle = vehicleOptional.get();
-                vehicleRepository.delete(vehicle);
-
-                return new VehicleDTO(
-                        vehicle.getVin(),
-                        vehicle.getLicencePlate(),
-                        new VehicleModelDTO(vehicle.getModel().getName(),
-                                new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())),
-                        vehicle.getYear(),
+                                new VehicleBrandDTO(model.getVehicleBrand().getName())), vehicle.getYear(),
                         vehicle.getNumberOfSeats(),
                         vehicle.getTraction(),
                         vehicle.getFuelType(),
@@ -315,39 +284,120 @@ public class StandApiImpl implements StandAPI {
                         vehicle.getKms(),
                         vehicle.getNumberOfDoors(),
                         vehicle.getIdBuyer(),
-                        vehicle.getIdTransaction()
-                );
+                        vehicle.getIdTransaction());
             }
-
-            return null;
         }
 
-        @Override
-        public VehicleDTO changeVehicleStatus(String vin, VehicleDTO vehicleDTO) {
-            Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
+        return vehicleDTO;
+    }
 
-            if (vehicleOptional.isPresent()) {
-                Vehicle vehicle = vehicleOptional.get();
-                vehicle.setStatus(vehicleDTO.getStatusDTO());
-                vehicle = vehicleRepository.save(vehicle);
+    @Override
+    public VehicleDTO deleteVehicle(String vin) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
 
-                return new VehicleDTO(
-                        vehicle.getVin(),
-                        vehicle.getLicencePlate(),
-                        new VehicleModelDTO(vehicle.getModel().getName(),
-                                new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())),
-                        vehicle.getYear(), vehicle.getNumberOfSeats(), vehicle.getTraction(), vehicle.getFuelType(),
-                        vehicle.getColor(),  vehicle.getState(),  vehicle.getStatus(),  vehicle.getSellingPrice(),
-                        vehicle.getPurchasePrice(), vehicle.getKms(), vehicle.getNumberOfDoors(), vehicle.getIdBuyer(), vehicle.getIdTransaction()
-                );
-            }
+        if (vehicleOptional.isPresent()) {
+            Vehicle vehicle = vehicleOptional.get();
+            vehicleRepository.delete(vehicle);
 
-            return null;
+            return new VehicleDTO(
+                    vehicle.getVin(),
+                    vehicle.getLicencePlate(),
+                    new VehicleModelDTO(vehicle.getModel().getName(),
+                            new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())),
+                    vehicle.getYear(),
+                    vehicle.getNumberOfSeats(),
+                    vehicle.getTraction(),
+                    vehicle.getFuelType(),
+                    vehicle.getColor(),
+                    vehicle.getState(),
+                    vehicle.getStatus(),
+                    vehicle.getSellingPrice(),
+                    vehicle.getPurchasePrice(),
+                    vehicle.getKms(),
+                    vehicle.getNumberOfDoors(),
+                    vehicle.getIdBuyer(),
+                    vehicle.getIdTransaction()
+            );
         }
 
+        return null;
+    }
+
+    @Override
+    public VehicleDTO changeVehicleStatus(String vin, VehicleDTO vehicleDTO) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
+
+        if (vehicleOptional.isPresent()) {
+            Vehicle vehicle = vehicleOptional.get();
+            vehicle.setStatus(vehicleDTO.getStatusDTO());
+            vehicle = vehicleRepository.save(vehicle);
+
+            return new VehicleDTO(
+                    vehicle.getVin(),
+                    vehicle.getLicencePlate(),
+                    new VehicleModelDTO(vehicle.getModel().getName(),
+                            new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())),
+                    vehicle.getYear(), vehicle.getNumberOfSeats(), vehicle.getTraction(), vehicle.getFuelType(),
+                    vehicle.getColor(), vehicle.getState(), vehicle.getStatus(), vehicle.getSellingPrice(),
+                    vehicle.getPurchasePrice(), vehicle.getKms(), vehicle.getNumberOfDoors(), vehicle.getIdBuyer(), vehicle.getIdTransaction()
+            );
+        }
+
+        return vehicleDTO;
+    }
+
+    // Methods to get stock vehicles AND convert it to DTO.
+    @Override
+    public List<VehicleDTO> getStockVehicles() {
+        List<VehicleDTO> stockVehicles = vehicleRepository.findByState(State.IN_STOCK).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return stockVehicles;
+    }
+
+    // Method to get all sold vehicles
+    @Override
+    public List<VehicleDTO> getAllVehicleSold() {
+        List<VehicleDTO> soldVehicles = vehicleRepository.findByState(State.SOLD).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return soldVehicles;
+    }
+
+    @Override
+    public List<VehicleDTO> findAllVehicleByBuyer(@PathVariable int idBuyer) {
+        List<VehicleDTO> vehiclesBought = vehicleRepository.findAllVehicleByBuyer(idBuyer).stream().map(this::convertToDTO).collect(Collectors.toList());
+        return vehiclesBought;
+    }
 
 
-//=========================================STANDS=======================================================================
+
+
+
+    private VehicleDTO convertToDTO(Vehicle vehicle) {
+        VehicleDTO vehicleDTO = new VehicleDTO();
+        vehicleDTO.setVin(vehicle.getVin());
+        vehicleDTO.setLicencePlateDTO(vehicle.getLicencePlate());
+        vehicleDTO.setModelDTO(new VehicleModelDTO(vehicle.getModel().getName(),
+                new VehicleBrandDTO(vehicle.getModel().getVehicleBrand().getName())));
+        vehicleDTO.setYearDTO(vehicle.getYear());
+        vehicleDTO.setNumberOfSeatsDTO(vehicle.getNumberOfSeats());
+        vehicleDTO.setTractionDTO(vehicle.getTraction());
+        vehicleDTO.setFuelTypeDTO(vehicle.getFuelType());
+        vehicleDTO.setColorDTO(vehicle.getColor());
+        vehicleDTO.setStateDTO(vehicle.getState());
+        vehicleDTO.setStatusDTO(vehicle.getStatus());
+        vehicleDTO.setSellingPriceDTO(vehicle.getSellingPrice());
+        vehicleDTO.setPurchasePriceDTO(vehicle.getPurchasePrice());
+        vehicleDTO.setKmsDTO(vehicle.getKms());
+        vehicleDTO.setNumberOfDoorsDTO(vehicle.getNumberOfDoors());
+        vehicleDTO.setIdBuyer(vehicle.getIdBuyer());
+        vehicleDTO.setIdTransaction(vehicle.getIdTransaction());
+        return vehicleDTO;
+    }
+
+
+    //=========================================STANDS=======================================================================
     @Override
     public StandDTO addStand(StandDTO standDTO) {
         Stand newStand = new Stand(standDTO.getStandIdDTO(), standDTO.getNameDTO(), standDTO.getPhoneNumberDTO(), standDTO.getEmailDTO());
@@ -390,4 +440,5 @@ public class StandApiImpl implements StandAPI {
         }
     }
 }
+
 

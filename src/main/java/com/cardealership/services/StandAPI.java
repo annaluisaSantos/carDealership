@@ -4,6 +4,7 @@ import com.cardealership.domain.Seller;
 import com.cardealership.domain.Vehicle;
 import com.cardealership.dto.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -69,9 +70,12 @@ public interface StandAPI {
 
     VehicleDTO changeVehicleStatus(String vin, VehicleDTO vehicle);
 
-//    VehicleDTO stockVehicle(long vehicleId, VehicleDTO vehicle);
-//    VehicleDTO soldVehicle(long vehicleId, VehicleDTO vehicle);
-//    VehicleDTO vehicleBought(long vehicleId, VehicleDTO vehicle);
+    List<VehicleDTO> getStockVehicles();
+
+    List<VehicleDTO> getAllVehicleSold();
+
+    List<VehicleDTO> findAllVehicleByBuyer(@PathVariable int idBuyer);
+
     /**
      * Methods for stand
      * @param stand
