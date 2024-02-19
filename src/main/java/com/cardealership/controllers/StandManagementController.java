@@ -206,19 +206,19 @@ public class StandManagementController {
             }
         }
 
-        @PutMapping("/updateVehicle/{vehicleId}")
-        public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable long vehicleId, @RequestBody VehicleDTO updatedVehicle) {
+        @PutMapping("/updateVehicle/{vin}")
+        public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicle) {
             try {
-                return ResponseEntity.ok(standAPI.updateVehicle(vehicleId, updatedVehicle));
+                return ResponseEntity.ok(standAPI.updateVehicle(vin, updatedVehicle));
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        @DeleteMapping("/deleteVehicle/{vehicleId}")
-        public ResponseEntity<Void> deleteVehicle(@PathVariable long vehicleId) {
+        @DeleteMapping("/deleteVehicle/{vin}")
+        public ResponseEntity<Void> deleteVehicle(@PathVariable String vin) {
             try {
-                VehicleDTO deletedVehicle = standAPI.deleteVehicle(vehicleId);
+                VehicleDTO deletedVehicle = standAPI.deleteVehicle(vin);
                 if (deletedVehicle != null) {
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 } else {
@@ -229,10 +229,10 @@ public class StandManagementController {
             }
         }
 
-        @PutMapping("/vehicle/status/{vehicleId}")
-        public ResponseEntity<VehicleDTO> changeVehicleStatus(@PathVariable long vehicleId, @RequestBody VehicleDTO updatedVehicleStatus) {
+        @PutMapping("/vehicle/status/{vin}")
+        public ResponseEntity<VehicleDTO> changeVehicleStatus(@PathVariable String vin, @RequestBody VehicleDTO updatedVehicleStatus) {
             try {
-                return ResponseEntity.ok(standAPI.changeVehicleStatus(vehicleId, updatedVehicleStatus));
+                return ResponseEntity.ok(standAPI.changeVehicleStatus(vin, updatedVehicleStatus));
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }

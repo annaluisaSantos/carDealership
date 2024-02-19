@@ -1,6 +1,10 @@
 package com.cardealership.dto;
 
 
+import com.cardealership.enums.FuelType;
+import com.cardealership.enums.State;
+import com.cardealership.enums.Status;
+
 public class VehicleModelDTO {
     private String name;
 
@@ -12,8 +16,6 @@ public class VehicleModelDTO {
         this.name = name;
         this.vehicleBrand = vehicleBrand;
     }
-
-
 
     public String getName() {
         return name;

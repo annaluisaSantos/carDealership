@@ -9,10 +9,10 @@ import org.hibernate.annotations.Columns;
 @Entity
 public class Vehicle {
     @Id
+    private String vin;
+
     private String licencePlate;
 
-    @ManyToOne
-    private VehicleBrand brand;
     @ManyToOne
     private VehicleModel model;
     @Column(name="ano")
@@ -22,7 +22,6 @@ public class Vehicle {
     @Enumerated(EnumType.ORDINAL)
     private FuelType fuelType;
     private String color;
-    private String type;
     @Enumerated(EnumType.ORDINAL)
     private State state;
     @Enumerated(EnumType.ORDINAL)
@@ -31,15 +30,18 @@ public class Vehicle {
     private double purchasePrice;
     private double kms;
     private int numberOfDoors;
-    private int numberOfWheels;
+     private int idBuyer;
+    private int idTransaction;
 
-    public Vehicle(String licencePlate, VehicleBrand brand, VehicleModel model,
-                   int year, int numberOfSeats, String traction, FuelType fuelType,
-                   String color, State state, Status status,
-                   double sellingPrice, double purchasePrice, double kms,
-                   int numberOfDoors, int numberOfWheels) {
+    //Cosntrutor vazio
+
+    public Vehicle() {}
+
+    //Construtor
+    public Vehicle(String vin, String licencePlate,VehicleModel model, int year, int numberOfSeats, String traction, FuelType fuelType,
+                   String color, State state, Status status, double sellingPrice, double purchasePrice, double kms, int numberOfDoors, int idBuyer, int idTransaction) {
+        this.vin = vin;
         this.licencePlate = licencePlate;
-        this.brand = brand;
         this.model = model;
         this.year = year;
         this.numberOfSeats = numberOfSeats;
@@ -52,18 +54,16 @@ public class Vehicle {
         this.purchasePrice = purchasePrice;
         this.kms = kms;
         this.numberOfDoors = numberOfDoors;
-        this.numberOfWheels = numberOfWheels;
+        this.idBuyer = idBuyer;
+        this.idTransaction = idTransaction;
     }
 
-    public Vehicle() {}
+    public String getVin() {
+        return vin;
+    }
 
     public String getLicencePlate() {
         return licencePlate;
-    }
-
-    @OneToMany
-    public VehicleBrand getBrand() {
-        return brand;
     }
 
     @OneToMany
@@ -90,9 +90,7 @@ public class Vehicle {
     public String getColor() {
         return color;
     }
-
-
-
+// GETS
     public State getState() {
         return state;
     }
@@ -117,17 +115,21 @@ public class Vehicle {
         return numberOfDoors;
     }
 
-    public int getNumberOfWheels() {
-        return numberOfWheels;
+    public int getIdBuyer() {
+        return idBuyer;
     }
 
+    public int getIdTransaction() {
+        return idTransaction;
+    }
+
+
+
+    // SETS
     public void setLicencePlate(String licencePlate) {
         this.licencePlate = licencePlate;
     }
 
-    public void setBrand(VehicleBrand brand) {
-        this.brand = brand;
-    }
 
     public void setModel(VehicleModel model) {
         this.model = model;
@@ -178,8 +180,16 @@ public class Vehicle {
         this.numberOfDoors = numberOfDoors;
     }
 
-    public void setNumberOfWheels(int numberOfWheels) {
-        this.numberOfWheels = numberOfWheels;
+    public void setIdBuyer(int idBuyer) {
+        this.idBuyer = idBuyer;
+    }
+
+    public void setIdTransaction(int idTransaction) {
+        this.idTransaction = idTransaction;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 }
 

@@ -63,14 +63,20 @@ public interface StandAPI {
 
     VehicleDTO addVehicle(VehicleDTO vehicle);
 
-    VehicleDTO updateVehicle(long vehicleId, VehicleDTO vehicle);
+    VehicleDTO updateVehicle(String Vin, VehicleDTO vehicle);
 
-    VehicleDTO deleteVehicle(long vehicleId);
+    VehicleDTO deleteVehicle(String vin);
 
-    VehicleDTO changeVehicleStatus(long vehicleId, VehicleDTO vehicle);
+    VehicleDTO changeVehicleStatus(String vin, VehicleDTO vehicle);
 
-
-
+//    VehicleDTO stockVehicle(long vehicleId, VehicleDTO vehicle);
+//    VehicleDTO soldVehicle(long vehicleId, VehicleDTO vehicle);
+//    VehicleDTO vehicleBought(long vehicleId, VehicleDTO vehicle);
+    /**
+     * Methods for stand
+     * @param stand
+     * @return
+     */
     StandDTO addStand(StandDTO stand);
     List<StandDTO> listStands();
     StandDTO updateStand(long standId, StandDTO updatedStand);

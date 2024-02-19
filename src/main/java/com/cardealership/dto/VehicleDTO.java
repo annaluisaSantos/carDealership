@@ -7,33 +7,31 @@ import com.cardealership.enums.Status;
 
 public class VehicleDTO {
 
+    private String vin;
+
     private String licencePlateDTO;
-    private VehicleBrandDTO brandDTO;
     private VehicleModelDTO modelDTO;
     private int yearDTO;
     private int numberOfSeatsDTO;
     private String tractionDTO;
     private FuelType fuelTypeDTO;
     private String colorDTO;
-    private String TypeDTO;
     private State stateDTO;
     private Status statusDTO;
     private double sellingPriceDTO;
     private double purchasePriceDTO;
     private double kmsDTO;
     private int numberOfDoorsDTO;
-    private int numberOfWheelsDTO;
+    public int idBuyer;
+    public int idTransaction;
 
     public VehicleDTO() { }
 
-    public VehicleDTO(String licencePlateDTO, VehicleBrandDTO brandDTO,
-                      VehicleModelDTO modelDTO, int yearDTO, int numberOfSeatsDTO,
-                      String tractionDTO, FuelType fuelTypeDTO, String colorDTO,
-                      State stateDTO, Status statusDTO,
-                      double sellingPriceDTO, double purchasePriceDTO, double kmsDTO,
-                      int numberOfDoorsDTO, int numberOfWheelsDTO) {
+    public VehicleDTO(String vin, String licencePlateDTO, VehicleModelDTO modelDTO, int yearDTO, int numberOfSeatsDTO, String tractionDTO,
+                      FuelType fuelTypeDTO, String colorDTO, State stateDTO, Status statusDTO, double sellingPriceDTO, double purchasePriceDTO, double kmsDTO,
+                      int numberOfDoorsDTO, int idBuyer, int idTransaction) {
+        this.vin = vin;
         this.licencePlateDTO = licencePlateDTO;
-        this.brandDTO = brandDTO;
         this.modelDTO = modelDTO;
         this.yearDTO = yearDTO;
         this.numberOfSeatsDTO = numberOfSeatsDTO;
@@ -46,16 +44,21 @@ public class VehicleDTO {
         this.purchasePriceDTO = purchasePriceDTO;
         this.kmsDTO = kmsDTO;
         this.numberOfDoorsDTO = numberOfDoorsDTO;
-        this.numberOfWheelsDTO = numberOfWheelsDTO;
+        this.idBuyer = idBuyer;
+        this.idTransaction = idTransaction;
+    }
+
+    //GETS
+
+
+    public String getVin() {
+        return vin;
     }
 
     public String getLicencePlateDTO() {
         return licencePlateDTO;
     }
 
-    public VehicleBrandDTO getBrandDTO() {
-        return brandDTO;
-    }
 
     public VehicleModelDTO getModelDTO() {
         return modelDTO;
@@ -81,9 +84,6 @@ public class VehicleDTO {
         return colorDTO;
     }
 
-    public String getTypeDTO() {
-        return TypeDTO;
-    }
 
     public State getStateDTO() {
         return stateDTO;
@@ -109,17 +109,26 @@ public class VehicleDTO {
         return numberOfDoorsDTO;
     }
 
-    public int getNumberOfWheelsDTO() {
-        return numberOfWheelsDTO;
+    public int getIdBuyer() {
+        return idBuyer;
+    }
+
+    public int getIdTransaction() {
+        return idTransaction;
+    }
+
+//SETS
+
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public void setLicencePlateDTO(String licencePlateDTO) {
         this.licencePlateDTO = licencePlateDTO;
     }
 
-    public void setBrandDTO(VehicleBrandDTO brandDTO) {
-        this.brandDTO = brandDTO;
-    }
+
 
     public void setModelDTO(VehicleModelDTO modelDTO) {
         this.modelDTO = modelDTO;
@@ -170,8 +179,12 @@ public class VehicleDTO {
         this.numberOfDoorsDTO = numberOfDoorsDTO;
     }
 
-    public void setNumberOfWheelsDTO(int numberOfWheelsDTO) {
-        this.numberOfWheelsDTO = numberOfWheelsDTO;
+    public void setIdBuyer(int idBuyer) {
+        this.idBuyer = idBuyer;
+    }
+
+    public void setIdTransaction(int idTransaction) {
+        this.idTransaction = idTransaction;
     }
 }
 
