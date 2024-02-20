@@ -4,8 +4,9 @@ package com.cardealership.dto;
 import com.cardealership.enums.FuelType;
 import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
+import org.springframework.hateoas.RepresentationModel;
 
-public class VehicleModelDTO {
+public class VehicleModelDTO extends RepresentationModel<VehicleModelDTO> {
     private String name;
 
     private VehicleBrandDTO vehicleBrand;

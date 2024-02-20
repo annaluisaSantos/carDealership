@@ -1,7 +1,9 @@
 package com.cardealership.dto;
 
 
-public class VehicleBrandDTO {
+import org.springframework.hateoas.RepresentationModel;
+
+public class VehicleBrandDTO extends RepresentationModel<VehicleBrandDTO> {
     private String name;
 
 

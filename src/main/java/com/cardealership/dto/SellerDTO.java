@@ -1,8 +1,9 @@
 package com.cardealership.dto;
 
 
+import org.springframework.hateoas.RepresentationModel;
 
-public class SellerDTO {
+public class SellerDTO extends RepresentationModel<SellerDTO> {
 
     private Long sellerIdDTO;
     private String nameDTO;

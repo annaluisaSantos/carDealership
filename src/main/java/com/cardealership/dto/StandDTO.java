@@ -1,7 +1,9 @@
 package com.cardealership.dto;
 
 
-public class StandDTO {
+import org.springframework.hateoas.RepresentationModel;
+
+public class StandDTO extends RepresentationModel<StandDTO> {
 
     private Long StandIdDTO;
     private String nameDTO;

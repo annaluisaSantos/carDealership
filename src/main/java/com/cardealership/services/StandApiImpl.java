@@ -7,11 +7,13 @@ import com.cardealership.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class StandApiImpl implements StandAPI {
@@ -80,6 +82,7 @@ public class StandApiImpl implements StandAPI {
 
 //====================================== MODELS ===========================================================
 
+
     private VehicleModel getVehicleModelByName(String modelName) {
         Optional<VehicleModel> modelOptional = vehicleModelRepository.findByName(modelName);
         if (modelOptional.isPresent()) {
@@ -89,6 +92,7 @@ public class StandApiImpl implements StandAPI {
         }
     }
 
+    @Transactional
     @Override
     public VehicleModelDTO addModel(VehicleModelDTO model) {
         VehicleModel newModel = new VehicleModel(model.getName(), new VehicleBrand(model.getVehicleBrandDTO().getName()));
@@ -104,7 +108,7 @@ public class StandApiImpl implements StandAPI {
                 new VehicleModelDTO(model.getName(), new VehicleBrandDTO(model.getVehicleBrand().getName()))
         ).collect(Collectors.toList());
     }
-
+    @Transactional
     @Override
     public VehicleModelDTO updateModel(String name, VehicleModelDTO modelDTO) {
         Optional<VehicleModel> existingModelOptional = vehicleModelRepository.findByName(name);
@@ -121,6 +125,7 @@ public class StandApiImpl implements StandAPI {
         }
     }
 
+    @Transactional
     @Override
     public VehicleModelDTO deleteModel(String name) {
         Optional<VehicleModel> modelToDelete = vehicleModelRepository.findByName(name);
@@ -192,6 +197,7 @@ public class StandApiImpl implements StandAPI {
         ).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public VehicleDTO addVehicle(VehicleDTO vehicleDTO) {
         Optional<VehicleModel> modelOptional = vehicleModelRepository.findById(vehicleDTO.getModelDTO().getName());
@@ -242,6 +248,7 @@ public class StandApiImpl implements StandAPI {
         return vehicleDTO;
     }
 
+    @Transactional
     @Override
     public VehicleDTO updateVehicle(String vin, VehicleDTO vehicleDTO) {
         Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
@@ -291,6 +298,7 @@ public class StandApiImpl implements StandAPI {
         return vehicleDTO;
     }
 
+    @Transactional
     @Override
     public VehicleDTO deleteVehicle(String vin) {
         Optional<Vehicle> vehicleOptional = vehicleRepository.findByVin(vin);
@@ -346,7 +354,7 @@ public class StandApiImpl implements StandAPI {
         return vehicleDTO;
     }
 
-    // Methods to get stock vehicles AND convert it to DTO.
+    // ====================================================== LISTS VEHICLES ============================================================
     @Override
     public List<VehicleDTO> getStockVehicles() {
         List<VehicleDTO> stockVehicles = vehicleRepository.findByState(State.IN_STOCK).stream()
@@ -355,24 +363,31 @@ public class StandApiImpl implements StandAPI {
         return stockVehicles;
     }
 
-    // Method to get all sold vehicles
+    // Method to get all sold vehicles with its buyer ID
     @Override
-    public List<VehicleDTO> getAllVehicleSold() {
+    public List<VehicleDTO> getAllVehicleSold(int buyerId, int transactionId) {
         List<VehicleDTO> soldVehicles = vehicleRepository.findByState(State.SOLD).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
         return soldVehicles;
     }
 
+    // Method to get all bought vehicles by a certain id buyer
     @Override
     public List<VehicleDTO> findAllVehicleByBuyer(@PathVariable int idBuyer) {
         List<VehicleDTO> vehiclesBought = vehicleRepository.findAllVehicleByBuyer(idBuyer).stream().map(this::convertToDTO).collect(Collectors.toList());
         return vehiclesBought;
     }
 
+    // List of vehicles by brand name
+    @Override
+    public List<VehicleDTO> findByBrand(@PathVariable String brand) {
+        List<VehicleDTO> vehiclesByBrand = vehicleRepository.findByBrand(brand).stream().map(this::convertToDTO).collect(Collectors.toList());
+        return vehiclesByBrand;
+    }
 
 
-
+    // Convert objects to DTO
 
     private VehicleDTO convertToDTO(Vehicle vehicle) {
         VehicleDTO vehicleDTO = new VehicleDTO();
@@ -397,7 +412,7 @@ public class StandApiImpl implements StandAPI {
     }
 
 
-    //=========================================STANDS=======================================================================
+    //================================================STANDS=======================================================================
     @Override
     public StandDTO addStand(StandDTO standDTO) {
         Stand newStand = new Stand(standDTO.getStandIdDTO(), standDTO.getNameDTO(), standDTO.getPhoneNumberDTO(), standDTO.getEmailDTO());
@@ -440,5 +455,3 @@ public class StandApiImpl implements StandAPI {
         }
     }
 }
-
-

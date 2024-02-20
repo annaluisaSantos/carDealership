@@ -3,9 +3,10 @@ package com.cardealership.dto;
 import com.cardealership.enums.FuelType;
 import com.cardealership.enums.State;
 import com.cardealership.enums.Status;
+import org.springframework.hateoas.RepresentationModel;
 
 
-public class VehicleDTO {
+public class VehicleDTO extends RepresentationModel<VehicleDTO> {
 
     private String vin;
 

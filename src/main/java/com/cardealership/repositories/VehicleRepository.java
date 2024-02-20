@@ -16,11 +16,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 @Query("SELECT v FROM Vehicle v WHERE v.state = :state")
 List<Vehicle> findByState(State state);
 
-    // Find in database all vehicles sold
-//    @Query("SELECT v FROM Vehicle v WHERE v.state = :sold")
-//    List<Vehicle> findAllVehicleSold(@Param("sold") State state);
 
     @Query("SELECT v FROM Vehicle v WHERE v.idBuyer = :idBuyer")
     List<Vehicle> findAllVehicleByBuyer(@Param("idBuyer") int idBuyer);
+
+    @Query("SELECT v FROM Vehicle v WHERE v.model.vehicleBrand.name = :brand")
+    List<Vehicle> findByBrand(@Param("brand") String brand);
 }
 
